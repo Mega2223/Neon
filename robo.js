@@ -1,5 +1,5 @@
 //valores achados na tentativa e erro
-
+//F = 8.80 B = 7.39
 const FAST = 3000;
 const SH = 127;
 const SM = 115;
