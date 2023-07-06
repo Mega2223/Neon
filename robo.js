@@ -1,5 +1,5 @@
 //valores achados na tentativa e erro
-//F = 8.72 B =7.42
+//F = 8,70 B =7,42
 
 const FAST = 3000;
 const SHL = 126;
@@ -26,8 +26,8 @@ function control(left_sensor, right_sensor, speed) {
     var eng = FAST - (posDif*5000);
     
     if (speed > SM) {eng -= 450;}
-    if (speed > SM && posDif >= .25) {eng -= 700;}
-    if (speed > SM && posDif >= .5) {eng -= 700;}
+    if (speed > SM && posDif >= .25) {eng -= 500;}
+    if (speed > SM && posDif >= .5) {eng -= 600;}
     
     if (speed > SH) {eng -= 2250;}
     
@@ -35,7 +35,7 @@ function control(left_sensor, right_sensor, speed) {
     LSC+=1;
     
     //ritual que me faz ganhar tempo
-    var cIn = (6000-(LSC*100));
+    var cIn = (6500-(LSC*100));
     if(cIn < -500){cIn = -500;}
     if (LSC > 10){
         eng += cIn;
@@ -45,7 +45,7 @@ function control(left_sensor, right_sensor, speed) {
     
     if (speed < SL) {eng = FAST;}
     if (speed < SVL) {eng = FAST+1500;}
-    if (speed > SHL) {eng = 0;}
+    if (speed > SHL) {eng = 75;}
    
     return {
         engineTorque: eng,
