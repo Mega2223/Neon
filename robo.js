@@ -21,7 +21,7 @@ function control(left_sensor, right_sensor, speed) {
     var eng = FAST - (posDif*5000);
     
     if (speed > SM) {eng -= 450;}
-    if (speed > SM && posDif >= .25) {eng -= 1000;}
+    if (speed > SM && posDif >= .25) {eng -= 750;}
     if (speed > SH) {eng -= 1500;}
     if (speed < SL) {eng = FAST;}
     
