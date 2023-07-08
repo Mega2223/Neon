@@ -1,14 +1,14 @@
 //valores achados na tentativa e erro
-//F = 8,70 B =7,42
+//F = 8,54 B =7,36
 
 const FAST = 3000;
-const SHL = 126;
+const SHL = 127;
 const SH = 123;
-const SM = 115;
-const SL = 100;
-const SVL = 50;
+const SM = 117;
+const SL = 105;
+const SVL = 60;
 
-var LSC = 50;
+var LSC = 0;
 
 function control(left_sensor, right_sensor, speed) {
     
@@ -17,9 +17,9 @@ function control(left_sensor, right_sensor, speed) {
     var bre = 0;
     var ste = 0;
     
-    var maxSteering = (speed/130)*(3.14/4)*0.7; //pro robô não sair rolando nas curvas
+    var maxSteering = ((1/speed)*125)*(3.14/4)*0.25; //pro robô não sair rolando nas curvas
     
-    ste += dif/6;
+    ste += dif/5.75;
     if(ste > maxSteering){ste = maxSteering;}
     else if(ste < -maxSteering){ste = -maxSteering;}
     
@@ -29,13 +29,13 @@ function control(left_sensor, right_sensor, speed) {
     if (speed > SM && posDif >= .25) {eng -= 500;}
     if (speed > SM && posDif >= .5) {eng -= 600;}
     
-    if (speed > SH) {eng -= 2250;}
+    if (speed > SH) {eng -= 1750;}
     
     if(posDif >= .3){LSC = 0;}
     LSC+=1;
     
     //ritual que me faz ganhar tempo
-    var cIn = (6500-(LSC*100));
+    var cIn = (7500-(LSC*165));
     if(cIn < -500){cIn = -500;}
     if (LSC > 10){
         eng += cIn;
@@ -45,7 +45,7 @@ function control(left_sensor, right_sensor, speed) {
     
     if (speed < SL) {eng = FAST;}
     if (speed < SVL) {eng = FAST+1500;}
-    if (speed > SHL) {eng = 75;}
+    if (speed > SHL) {eng=100;}
    
     return {
         engineTorque: eng,
@@ -56,7 +56,7 @@ function control(left_sensor, right_sensor, speed) {
             { name: 'Left_sensor', value: left_sensor, min: 0, max: 1 },
             { name: 'Right_sensor', value: right_sensor, min: 0, max: 1 },
             { name: 'Engine Output', value: eng, min: 0, max: FAST+2100},
-            { name: 'LSC', value: LSC, min: 0, max: 100}
+            { name: 'LSC', value: cIn, min: 0, max: 10000}
           
         ]
     };
