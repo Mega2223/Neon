@@ -1,14 +1,5 @@
 //valores achados na tentativa e erro
-//F = 8,54 B =7,36
-
-const FAST = 3000;
-const SHL = 127;
-const SH = 123;
-const SM = 117;
-const SL = 105;
-const SVL = 60;
-
-var LSC = 0;
+//F = 8,51 B = 7,10
 
 function control(left_sensor, right_sensor, speed) {
     
@@ -16,47 +7,22 @@ function control(left_sensor, right_sensor, speed) {
     var posDif = dif; if (dif < 0){posDif =-dif;}
     var bre = 0;
     var ste = 0;
+    var eng = 0.0;
     
-    var maxSteering = ((1/speed)*125)*(3.14/4)*0.25; //pro robô não sair rolando nas curvas
+    var dec = (160.0 - speed)/160.0;
+    console.log(dec);
+    eng = dec;
     
-    ste += dif/5.75;
-    if(ste > maxSteering){ste = maxSteering;}
-    else if(ste < -maxSteering){ste = -maxSteering;}
-    
-    var eng = FAST - (posDif*5000);
-    
-    if (speed > SM) {eng -= 450;}
-    if (speed > SM && posDif >= .25) {eng -= 500;}
-    if (speed > SM && posDif >= .5) {eng -= 600;}
-    
-    if (speed > SH) {eng -= 1750;}
-    
-    if(posDif >= .3){LSC = 0;}
-    LSC+=1;
-    
-    //ritual que me faz ganhar tempo
-    var cIn = (7500-(LSC*165));
-    if(cIn < -500){cIn = -500;}
-    if (LSC > 10){
-        eng += cIn;
-        console.log(LSC + " : " + cIn);
-    }
-    //if(LSC > 20){console.log(LSC);}
-    
-    if (speed < SL) {eng = FAST;}
-    if (speed < SVL) {eng = FAST+1500;}
-    if (speed > SHL) {eng=100;}
-   
+    ste = dif/2;
     return {
-        engineTorque: eng,
+        engineTorque: eng*5000,
         brakingTorque: bre,
-        steeringAngle: ste,
+        steeringAngle: ste * (3.14/4),
         log: [
             { name: 'Speed', value: speed, min: 0, max: 200 },
             { name: 'Left_sensor', value: left_sensor, min: 0, max: 1 },
             { name: 'Right_sensor', value: right_sensor, min: 0, max: 1 },
-            { name: 'Engine Output', value: eng, min: 0, max: FAST+2100},
-            { name: 'LSC', value: cIn, min: 0, max: 10000}
+            { name: 'Engine Output', value: eng, min: 0, max: 1},
           
         ]
     };
