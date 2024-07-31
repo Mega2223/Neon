@@ -6,6 +6,10 @@ const MS = (3.14/4);
 function clamp(min,max,num){
     return Math.min(Math.max(num,min),max);
 }
+var ste_KP = 0.5, ste_KI = .01, ste_KD = .5;
+
+var ste_I = 0;
+var dif_last = 0;
 
 function control(left_sensor, right_sensor, speed) {
     
@@ -15,12 +19,14 @@ function control(left_sensor, right_sensor, speed) {
     var ste = 0;
     var eng = 0.0;
     
-    var dec = (160.0 - speed)/160.0;
-    //console.log(dec);
+    var dec = (155.0 - speed)/155.0;
     eng = dec;
-    ste = (dif/2);
     
-   
+    ste = dif * ste_KP + ste_I * ste_KI + (dif - dif_last) * ste_KD;
+    
+    dif_last = dif;
+    ste_I += dif;
+    
     return {
         engineTorque: eng*5000,
         brakingTorque: bre,
