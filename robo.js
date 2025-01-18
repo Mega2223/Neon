@@ -2,11 +2,13 @@
 //F = 8,51 B = 7,10
 
 const MS = (3.14/4);
+const HIGH_S = 180.0;
+const LOW_S = 140.0;
 
 function clamp(min,max,num){
     return Math.min(Math.max(num,min),max);
 }
-var ste_KP = 0.5, ste_KI = .01, ste_KD = .5;
+var ste_KP = 0.6, ste_KI = .000, ste_KD = 0.9;
 
 var ste_I = 0;
 var dif_last = 0;
@@ -19,8 +21,9 @@ function control(left_sensor, right_sensor, speed) {
     var ste = 0;
     var eng = 0.0;
     
-    var dec = (155.0 - speed)/155.0;
-    eng = dec;
+    var weight = dif > 0 ? dif : -dif;
+    var target = (LOW_S*weight + HIGH_S*(1-weight));
+    eng = (target - speed)/(target);
     
     ste = dif * ste_KP + ste_I * ste_KI + (dif - dif_last) * ste_KD;
     
